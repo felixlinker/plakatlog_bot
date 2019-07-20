@@ -1,4 +1,4 @@
-from telegram import ReplyKeyboardMarkup, KeyboardButton
+from telegram import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 from telegram.ext import Updater, CommandHandler
 from argparse import ArgumentParser
 
@@ -19,16 +19,19 @@ BUTTONS = [
 ]
 
 def start(update, context):
-    markup = ReplyKeyboardMarkup(
-        BUTTONS,
-        one_time_keyboard=True,
-        selective=update.message.from_user.id
-    )
+    markup = ReplyKeyboardMarkup(BUTTONS)
 
     context.bot.send_message(
         chat_id=update.message.chat_id,
         text='Ich speichere die Plakate, die du aufgehangen hast. Wie viele hast du gerade aufgehängt?',
         reply_markup=markup
+    )
+
+def end(update, context):
+    context.bot.send_message(
+        chat_id=update.message.chat_id,
+        text='Okay, ich verfolge eure Plakate nicht weiter.',
+        reply_markup=ReplyKeyboardRemove()
     )
 
 # Configure command line arguments to the bot
@@ -42,6 +45,7 @@ def main():
     dispatcher = updater.dispatcher
 
     dispatcher.add_handler(CommandHandler('start', start))
+    dispatcher.add_handler(CommandHandler('end', end))
 
     updater.start_polling()
     updater.idle()
