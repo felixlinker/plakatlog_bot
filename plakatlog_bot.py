@@ -13,9 +13,9 @@ def mk_plakat_button(number):
     return KeyboardButton(str(number), request_location=True)
 
 BUTTONS = [
-    list(map(mk_plakat_button, range(1, 5))),
-    list(map(mk_plakat_button, range(5, 9))),
-    list(map(mk_plakat_button, range(9, 13)))
+    [ mk_plakat_button(i) for i in range(1, 5) ],
+    [ mk_plakat_button(i) for i in range(5, 9) ],
+    [ mk_plakat_button(i) for i in range(9, 13) ]
 ]
 
 def start(update, context):
@@ -47,6 +47,7 @@ def main():
     dispatcher.add_handler(CommandHandler('start', start))
     dispatcher.add_handler(CommandHandler('end', end))
 
+    logging.info('Now polling')
     updater.start_polling()
     updater.idle()
 
