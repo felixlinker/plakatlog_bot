@@ -60,7 +60,7 @@ HUNG_MARKUP = ReplyKeyboardMarkup(
 
 def hung(update, context):
     location = update.message.location
-    context.user_data['last_location'] = f'({location.latitude},{location.longitude})'
+    context.user_data['last_location'] = f'{location.latitude},{location.longitude}'
     context.bot.send_message(
         chat_id=update.message.chat_id,
         text=' '.join([
@@ -80,7 +80,7 @@ def amount(update, context, write_to):
     when = update.message.date.strftime('%Y-%m-%d %H:%M:%S')
     hung_amount = int(update.message.text)
     with open(write_to, 'a') as fp:
-        fp.write(f'{who};{where};{when};{hung_amount}\n')
+        fp.write(f'{who},{where},{when},{hung_amount}\n')
     # TODO: actually handle amount
     context.bot.send_message(
         chat_id=update.message.chat_id,
