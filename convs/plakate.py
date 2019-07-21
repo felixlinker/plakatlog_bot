@@ -72,14 +72,15 @@ def hung(update, context):
     return AMOUNT
 
 
-def amount(update, context, fp):
+def amount(update, context, write_to):
     sender = update.message.from_user
     who = 'N/A' if context.user_data.get('anonymous',
                                          True) else f'{sender.first_name} {sender.last_name}'
     where = context.user_data['last_location']
     when = update.message.date.strftime('%Y-%m-%d %H:%M:%S')
     hung_amount = int(update.message.text)
-    fp.write(f'{who};{where};{when};{hung_amount}\n')
+    with open(write_to, 'a') as fp:
+        fp.write(f'{who};{where};{when};{hung_amount}\n')
     # TODO: actually handle amount
     context.bot.send_message(
         chat_id=update.message.chat_id,
@@ -115,13 +116,12 @@ def no_parse(update, context):
 
 
 def conversation_handler(write_to):
-    fp = open(write_to, 'a')
     return ConversationHandler(
         entry_points=[CommandHandler('plakate', start)],
         states={
             HANGING: [MessageHandler(Filters.location, hung)],
             AMOUNT: [MessageHandler(Filters.regex(
-                r'^\d+$'), lambda u, c: amount(u, c, fp))]
+                r'^\d+$'), lambda u, c: amount(u, c, write_to))]
         },
         fallbacks=[
             CommandHandler('fertig', done),
