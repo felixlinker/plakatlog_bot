@@ -7,15 +7,23 @@ LOGIN, ANONIMITY = range(2)
 
 
 def start(update, context):
-    context.bot.send_message(
-        chat_id=update.message.chat_id,
-        text=' '.join([
-            'Hallo! Ich helfe dir zu verfolgen, wo du wieviele Plakate aufgehängt hast.',
-            'Damit ich aber weiß, dass du einer von uns bist, nenne mir doch bitte das Passwort.'
-        ])
-    )
-
-    return LOGIN
+    if not context.user_data.get('auth', False):
+        context.bot.send_message(
+            chat_id=update.message.chat_id,
+            text=' '.join([
+                'Hallo! Ich helfe dir zu verfolgen, wo du wieviele Plakate aufgehängt hast.',
+                'Damit ich aber weiß, dass du einer von uns bist, nenne mir doch bitte das Passwort.'
+            ])
+        )
+        return LOGIN
+    else:
+        context.bot.send_message(
+            chat_id=update.message.chat_id,
+            text=' '.join([
+                'Hallo! Dich kenne ich ja schon.',
+                'Wenn du damit anfangen möchtest, dass ich deine Plakate verfolge, schreibe einfach /plakate.'
+            ])
+        )
 
 
 def pw(update, context):
