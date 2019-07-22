@@ -7,6 +7,7 @@ import convs.plakate as plakate
 # basic logging settings
 import logging
 logging.basicConfig(
+    filename='./plakatlog_bot.log',
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
