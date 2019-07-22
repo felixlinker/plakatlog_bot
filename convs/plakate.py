@@ -1,5 +1,6 @@
 from telegram.ext import CommandHandler, MessageHandler, ConversationHandler, Filters
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButton
+import logging
 
 
 HANGING, AMOUNT = range(2)
@@ -59,6 +60,7 @@ HUNG_MARKUP = ReplyKeyboardMarkup(
 
 
 def hung(update, context):
+    logging.info('Received poster location')
     location = update.message.location
     context.user_data['last_location'] = f'{location.latitude},{location.longitude}'
     context.bot.send_message(
@@ -73,6 +75,7 @@ def hung(update, context):
 
 
 def amount(update, context, write_to):
+    logging.info(f'Writing posters hung')
     sender = update.message.from_user
     who = 'N/A' if context.user_data.get('anonymous',
                                          True) else f'{sender.first_name} {sender.last_name}'
