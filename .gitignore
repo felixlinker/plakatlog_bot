@@ -2,3 +2,5 @@
 /__pycache__
 TOKEN
 launch.ps1
+launch.sh
+data.csv
