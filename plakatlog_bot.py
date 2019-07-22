@@ -21,9 +21,12 @@ parser.add_argument('--file', '-f', type=str,
                     required=True, help='Pfad zur .csv Datei')
 parser.add_argument('--password', '-p', type=str, required=True,
                     help='Passwort, das ein Nutzer eingeben muss, um den Bot freizuschalten.')
-
-# Start the polling-"server"
-
+parser.add_argument('--key', '-k', type=str,
+                    help='Pfad zum SSL certificate key')
+parser.add_argument('--cert', '-c', type=str,
+                    help='Pfad zum SSL certificate')
+parser.add_argument('--domain', '-d', type=str,
+                    help='Domain, auf der der Server läuft')
 
 def main():
     args = parser.parse_args()
@@ -33,8 +36,18 @@ def main():
     dispatcher.add_handler(login.conversation_handler(args.password))
     dispatcher.add_handler(plakate.conversation_handler(args.file))
 
-    logging.info('Now polling')
-    updater.start_polling()
+    # Start the polling-"server"
+    if args.key and args.cert:
+        logging.info('Starting webhook')
+        updater.start_webhook(listen='0.0.0.0',
+                              port=8443,
+                              url_path=args.token,
+                              key=args.key,
+                              cert=args.cert,
+                              webhook_url=f'https://{args.domain}:8443/{args.token}')
+    else:
+        logging.info('Start polling')
+        updater.start_polling()
     updater.idle()
 
 

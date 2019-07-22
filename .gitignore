@@ -1,5 +1,6 @@
 /.vscode
 /__pycache__
+/certs
 TOKEN
 launch.ps1
 launch.sh
