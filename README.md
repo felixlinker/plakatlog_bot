@@ -1,13 +1,13 @@
 # plakatlog_bot
 
-This repository has code for a telegram bot that simply provides you a keyboard
-with buttons from 1 to 12.
-If you press one of these, your location will be saved to a google spreadsheet
-alongside the number you pressed.
+This repository has code for a telegram bot that simply provides help for
+tracking posters hung.
+It is intended to be used for a selected group of peoples which - in my case -
+is located in Germany. Therefore all dialogues are written in German.
 
-It is intended to be used for placards in hung during election campains.
-These need to be removed once the election is over and this bot aids you in
-tracking where placards have been hung.
+It was initially written for the
+[Junge Liberale, Leipzig](https://www.julis-leipzig.de/) but as the use case may
+apply to other parties feel free to use the code to track your posters as well.
 
 ## Setup
 
@@ -22,8 +22,13 @@ https://docs.pipenv.org/en/latest/install/#installing-pipenv.
 
 After you have installed `pipenv` and it has been added to your path, run
 ```sh
-pipenv shell -c python ./plakatlog_bot.py --token <ACCESS-TOKEN>
+pipenv install
+pipenv run python ./plakatlog_bot.py
 ```
-and the app will start pulling the telegram API for updates.
-Obiously, you need to replace the `<ACCESS-TOKEN>` with an appropriate
-access-token for the telegram bot.
+This will prompt you the help for the bot explaining all command line options
+available.
+These arguments for the most-part are self explanatory.
+The bot can be either launched on a local machine that pulls updates from the
+telegram API manually or as a webhook on a server.
+For this you will need an SSL certificate.
+How one can be generated is explained in https://github.com/python-telegram-bot/python-telegram-bot/wiki/Webhooks
