@@ -65,7 +65,7 @@ def hung(update, context):
         chat_id=update.message.chat_id,
         text=' '.join([
             'Klasse!',
-            'Wie viele hast du aufgehängt?'
+            'Wie viele Doppel-Plakate hast du aufgehängt?'
         ]),
         reply_markup=HUNG_MARKUP
     )
