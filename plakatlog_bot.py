@@ -36,7 +36,6 @@ def main():
     dispatcher.add_handler(login.conversation_handler(args.password))
     dispatcher.add_handler(plakate.conversation_handler(args.file))
 
-    # Start the polling-"server"
     if args.key and args.cert:
         logging.info('Starting webhook')
         updater.start_webhook(listen='0.0.0.0',

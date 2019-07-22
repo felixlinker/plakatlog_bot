@@ -90,7 +90,7 @@ def conversation_handler(actual_password):
             ]
         },
         fallbacks=[
-            CommandHandler('cancel', cancel),
+            CommandHandler('abbrechen', cancel),
             CommandHandler('start', start),
             MessageHandler(Filters.update, no_parse)
         ]
