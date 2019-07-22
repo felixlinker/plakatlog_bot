@@ -19,11 +19,9 @@ def start(update, context):
     else:
         context.bot.send_message(
             chat_id=update.message.chat_id,
-            text=' '.join([
-                'Hallo! Dich kenne ich ja schon.',
-                'Wenn du damit anfangen möchtest, dass ich deine Plakate verfolge, schreibe einfach /plakate.'
-            ])
+            text='Hallo! Dich kenne ich ja schon - das Passwort brauche ich also nicht noch mal.'
         )
+        return pw(update, context)
 
 
 def pw(update, context):
@@ -31,12 +29,11 @@ def pw(update, context):
     context.bot.send_message(
         chat_id=update.message.chat_id,
         text=' '.join([
-            'Das war das richtige Passwort!',
-            'Ist es okay, wenn wir deinen Namen mit den Plakaten speichern, die du aufhängst? (ja/nein)',
+            'Ist es okay, wenn wir deinen Namen mit den Plakaten speichern, die du aufhängst? (ja,offen/nein,anonym)',
             'Du kannst diese Einstellunge jederzeit über /start ändern.'
         ]),
         reply_markup=ReplyKeyboardMarkup([
-            [KeyboardButton('Ja'), KeyboardButton('Nein')]
+            [KeyboardButton('Offen'), KeyboardButton('Anonym')]
         ])
     )
     return ANONIMITY
@@ -46,7 +43,7 @@ def be_anonymous(update, context):
     context.bot.send_message(
         chat_id=update.message.chat_id,
         text=' '.join([
-            'Deine Einstellungen wurden gespeichert, dann kann es ja losgehen!',
+            'Deine Einstellungen wurden gespeichert und es kann losgehen!',
             'Gib einfach /plakate ein und wir fangen an!'
         ]),
         reply_markup=ReplyKeyboardRemove()
@@ -84,8 +81,8 @@ def conversation_handler(actual_password):
             )],
             ANONIMITY: [
                 MessageHandler(Filters.regex(
-                    re.compile('^ja$', re.I)), be_public),
-                MessageHandler(Filters.regex(re.compile(r'^nein$', re.I)),
+                    re.compile('^(ja|offen)$', re.I)), be_public),
+                MessageHandler(Filters.regex(re.compile(r'^(nein|anonym)$', re.I)),
                                be_anonymous)
             ]
         },
