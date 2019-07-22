@@ -11,4 +11,4 @@ autopep8 = "*"
 python-telegram-bot = "==12.0.0b1"
 
 [requires]
-python_version = "3.7"
+python_version = "3.6"
