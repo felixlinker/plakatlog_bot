@@ -1,4 +1,4 @@
-from telegram.ext import Updater
+from telegram.ext import Updater, CommandHandler
 from argparse import ArgumentParser
 
 import convs.login as login
@@ -28,6 +28,22 @@ parser.add_argument('--cert', '-c', type=str,
 parser.add_argument('--domain', '-d', type=str,
                     help='Domain, auf der der Server läuft')
 
+def send_file(update, context, file_path):
+    if context.user_data.get('auth', False):
+        context.bot.send_document(
+            chat_id=update.message.chat_id,
+            document=open(file_path, 'rb')
+        )
+    else:
+        context.bot.send_message(
+            chat_id=update.message.chat_id,
+            text=' '.join([
+                'Das geht leider noch nicht.',
+                'Erst möchte ich überprüfen, ob du wirklich zur FDP gehörst.',
+                'Nenne mir bitte das Passwort, indem du zunächst /start eingibst.'
+            ])
+        )
+
 def main():
     args = parser.parse_args()
     updater = Updater(token=args.token, use_context=True)
@@ -35,6 +51,9 @@ def main():
 
     dispatcher.add_handler(login.conversation_handler(args.password))
     dispatcher.add_handler(plakate.conversation_handler(args.file))
+    dispatcher.add_handler(
+        CommandHandler('daten', lambda u, c: send_file(u, c, args.file))
+    )
 
     if args.key and args.cert:
         logging.info('Starting webhook')
